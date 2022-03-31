@@ -1,0 +1,59 @@
+# 划分
+Split (a0, a1, a2):	
+	t0 = 1;	# 标志左划分还是右划分
+	while (a1 != a2)
+	{
+		if (t0 == 1)	# 左划分
+		{
+			while (a1 != a2 && Mem(a0 + a1) <= Mem(a0 + a1))
+			{
+				a2--;
+			}
+			t3 = Mem(a0 + a1);
+			t4 = Mem(a0 + a2);
+			Mem(a0 + a1) = t4;
+			Mem(a0 + a2) = t3;
+			t0 = 0;
+		}
+		else		# 右划分
+		{
+			while (a1 != a2 && Mem(a0 + a1) <= Mem(a0 + a1))
+			{
+				a1++;
+			}
+			t3 = Mem(a0 + a1);
+			t4 = Mem(a0 + a2);
+			Mem(a0 + a1) = t4;
+			Mem(a0 + a2) = t3;
+			t0 = 1;
+		}	
+	}
+	return a1;
+
+# 快速排序
+QuickSort (a0, a1, a2):
+	if (a1 >= a2)		# 递归边界
+	{
+		return;
+	} 
+	v0 = Split (a0, a1, a2);
+	t0 = v0 - 1;
+	t1 = v0 + 1;
+	QuickSort (a0, a1, t0);
+	QuickSort (a0, t1, a2);
+
+# 输出数组
+PrintArray (a0, a1, a2):
+	while (a1 <= a2)
+	{
+		cout << Mem[a0 + a1];
+		a0 ++;
+	}
+	return;
+ 
+main:
+	a0 = &array;
+	a1 = 0;
+	a2 = 9;
+ 	QuickSort (a0, a1, a2);
+	PrintArray (a0, a1, a2);
