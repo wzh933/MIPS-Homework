@@ -1,11 +1,13 @@
 		.data
+result:		.asciiz "Sorted array:"
+		.align 2
 array:		.word 40
-mid:		.word 0
+
 		.globl main
 		.text
-main:		
+main:		# 输入数组元素
 		la	$t0, array
-		li	$t1, 10
+		li	$t1, 5
 input:		beqz	$t1, end_input
 		li	$v0, 5
 		syscall
@@ -17,7 +19,7 @@ input:		beqz	$t1, end_input
 		# 输入参数
 end_input:	la	$a0, array		# a0：数组首地址
 		li	$a1, 0			# a1：low
-		li	$a2, 9			# a2：high
+		li	$a2, 4			# a2：high
 		
 		# 调用QuickSort
 		addiu	$sp, $sp, -24		
@@ -153,6 +155,13 @@ PrintArray:
 		lw	$a0, 0($sp)
 		lw	$a1, 4($sp)
 		lw	$a2, 8($sp)
+		addiu	$sp, $sp, -4
+		sw	$a0, 0($sp)
+		la	$a0, result
+		li	$v0, 4
+		syscall
+		lw	$a0, 0($sp)
+		addiu	$sp, $sp, 4
 p_loop:		bgt	$a1, $a2, p_ret
 		lw	$t0, ($a0)
 		addiu	$sp, $sp, -4
