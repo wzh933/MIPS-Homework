@@ -4,10 +4,13 @@ mid:		.word 0
 		.globl main
 		.text
 main:		
-		la	$a0, array
-		li	$a1, 0
-		li	$a2, 4
-		addiu	$sp, $sp, -24
+		# 输入参数
+		la	$a0, array		# a0：数组首地址
+		li	$a1, 0			# a1：low
+		li	$a2, 4			# a2：high
+		
+		# 调用QuickSort
+		addiu	$sp, $sp, -24		
 		sw	$a0, 0($sp)
 		sw	$a1, 4($sp)
 		sw	$a2, 8($sp)
@@ -19,6 +22,7 @@ main:
 		lw	$a2, 8($sp)
 		addiu	$sp, $sp, 24
 		
+		# 调用PrintArray
 		addiu	$sp, $sp, -16
 		sw	$a0, 0($sp)
 		sw	$a1, 4($sp)
@@ -28,16 +32,21 @@ main:
 		lw	$ra, 12($sp)
 		addiu	$sp, $sp, 16
 		
+		# 结束
 		li	$v0, 10
 		syscall
 		
 		
 QuickSort:	
+		# 加载参数
 		lw	$a0, 0($sp)
 		lw	$a1, 4($sp)
 		lw	$a2, 8($sp)
+		
+		# 递归边界
 		bge	$a1, $a2, qs_ret
 		
+		# 调用Split进行划分
 		addiu	$sp, $sp, -20
 		sw	$a0, 0($sp)
 		sw	$a1, 4($sp)
@@ -48,14 +57,16 @@ QuickSort:
 		lw	$v0, 12($sp)
 		addiu	$sp, $sp, 20
 		
+		# 堆栈中存储mid - 1和mid + 1
 		addi	$t0, $v0, -1
 		addi	$t1, $v0, 1
-		sw	$t0, 12($sp)
-		sw	$t1, 16($sp)
+		sw	$t0, 12($sp)		# mid - 1
+		sw	$t1, 16($sp)		# mid + 1
 		
-		lw	$a0, 0($sp)
-		lw	$a1, 4($sp)
-		lw	$a2, 12($sp)
+		# 调用QuickSort
+		lw	$a0, 0($sp)		# a0：数组首地址
+		lw	$a1, 4($sp)		# a1：low
+		lw	$a2, 12($sp)		# a2：mid - 1
 		addiu	$sp, $sp, -24
 		sw	$a0, 0($sp)
 		sw	$a1, 4($sp)
@@ -65,10 +76,10 @@ QuickSort:
 		lw	$ra, 20($sp)
 		addiu	$sp, $sp, 24
 		
-		
-		lw	$a0, 0($sp)
-		lw	$a1, 16($sp)
-		lw	$a2, 8($sp)
+		# 调用QuickSort
+		lw	$a0, 0($sp)		# a0：数组首地址
+		lw	$a1, 16($sp)		# a1：mid + 1
+		lw	$a2, 8($sp)		# a2：high
 		addiu	$sp, $sp, -24
 		sw	$a0, 0($sp)
 		sw	$a1, 4($sp)
@@ -78,8 +89,7 @@ QuickSort:
 		lw	$ra, 20($sp)
 		addiu	$sp, $sp, 24
 				
-qs_ret:		
-		jr	$ra
+qs_ret:		jr	$ra
 		
 	
 			
