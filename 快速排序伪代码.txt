@@ -1,36 +1,51 @@
 # 划分
+# Cross References: 
+# a0 = &array
+# a1 = low
+# a2 = high
+# t0 = left
+# t3 = *(array + a1)
+# t4 = *(array + a2)
 Split (a0, a1, a2):	
 	t0 = 1;	# 标志左划分还是右划分
 	while (a1 != a2)
 	{
 		if (t0 == 1)	# 左划分
 		{
-			while (a1 != a2 && Mem(a0 + a1) <= Mem(a0 + a1))
+			while (a1 != a2 && Mem[a0 + a1] <= Mem[a0 + a1])
 			{
 				a2--;
 			}
-			t3 = Mem(a0 + a1);
-			t4 = Mem(a0 + a2);
-			Mem(a0 + a1) = t4;
-			Mem(a0 + a2) = t3;
+			t1 = a1 << 2;
+			t2 = a2 << 2;
+			t3 = Mem[a0 + t1];
+			t4 = Mem[a0 + t2];
+			Mem[a0 + t1] = t4;
+			Mem[a0 + t2] = t3;
 			t0 = 0;
 		}
 		else		# 右划分
 		{
-			while (a1 != a2 && Mem(a0 + a1) <= Mem(a0 + a1))
+			while (a1 != a2 && Mem[a0 + a1] <= Mem[a0 + a1])
 			{
 				a1++;
 			}
-			t3 = Mem(a0 + a1);
-			t4 = Mem(a0 + a2);
-			Mem(a0 + a1) = t4;
-			Mem(a0 + a2) = t3;
+			t3 = Mem[a0 + a1];
+			t4 = Mem[a0 + a2];
+			Mem[a0 + a1] = t4;
+			Mem[a0 + a2] = t3;
 			t0 = 1;
 		}	
 	}
 	return a1;
 
 # 快速排序
+# Cross References:  	# a0 = &array
+# a1 = low
+# a2 = high
+# v0 = mid  that is  Split (a0, a1, a2)
+# t0 = mid - 1
+# t1 = mid + 1
 QuickSort (a0, a1, a2):
 	if (a1 >= a2)		# 递归边界
 	{
@@ -43,17 +58,31 @@ QuickSort (a0, a1, a2):
 	QuickSort (a0, t1, a2);
 
 # 输出数组
+# Cross References:  	
+# a0 = &array
+# a1 = low
+# a2 = high
 PrintArray (a0, a1, a2):
 	while (a1 <= a2)
 	{
 		cout << Mem[a0 + a1];
-		a0 ++;
+		a1 ++;
 	}
 	return;
  
 main:
+	t0 = &array;
+	t1 = 5;
+	while (t1 != 0)
+	{
+		cin >> v0;
+		Mem[t0] = v0;
+		t0 += 4;
+		t1 --;
+	}
 	a0 = &array;
 	a1 = 0;
-	a2 = 9;
- 	QuickSort (a0, a1, a2);
+	a2 = 4;
+	QuickSort (a0, a1, a2);
 	PrintArray (a0, a1, a2);
+	return 0;
