@@ -1,13 +1,23 @@
 		.data
-array:		.word 6,8,3,5,4
+array:		.word 40
 mid:		.word 0
 		.globl main
 		.text
 main:		
+		la	$t0, array
+		li	$t1, 10
+input:		beqz	$t1, end_input
+		li	$v0, 5
+		syscall
+		sw	$v0, ($t0)
+		addi	$t0, $t0, 4
+		addi	$t1, $t1, -1
+		b 	input
+
 		# 输入参数
-		la	$a0, array		# a0：数组首地址
+end_input:	la	$a0, array		# a0：数组首地址
 		li	$a1, 0			# a1：low
-		li	$a2, 4			# a2：high
+		li	$a2, 9			# a2：high
 		
 		# 调用QuickSort
 		addiu	$sp, $sp, -24		
@@ -150,6 +160,10 @@ p_loop:		bgt	$a1, $a2, p_ret
 		move	$a0, $t0
 		li	$v0, 1
 		syscall
+		# 输出空格
+		li	$a0, 32
+		li	$v0, 11
+		syscall
 		lw	$a0, 0($sp)
 		addiu	$sp, $sp, 4
 		addi	$a0, $a0, 4
@@ -161,3 +175,4 @@ p_ret:		jr	$ra
 
 
 				
+
