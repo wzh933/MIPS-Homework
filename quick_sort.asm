@@ -14,22 +14,22 @@ main:
 		sw	$ra, 20($sp)
 		jal	QuickSort
 		lw	$ra, 20($sp)
+		lw	$a0, 0($sp)
+		lw	$a1, 4($sp)
+		lw	$a2, 8($sp)
 		addiu	$sp, $sp, 24
 		
-		la	$t0, array 
-		li	$t1, 5
-		li	$v0, 1
-print_array:	beqz	$t1, out
-		lw	$t2, ($t0)
-		move	$a0, $t2
-		syscall
-		addi	$t0, $t0, 4
-		addi	$t1, $t1, -1
-		b	print_array
-
-out:		li	$v0, 10
-		syscall
+		addiu	$sp, $sp, -16
+		sw	$a0, 0($sp)
+		sw	$a1, 4($sp)
+		sw	$a2, 8($sp)
+		sw	$ra, 12($sp)
+		jal	PrintArray
+		lw	$ra, 12($sp)
+		addiu	$sp, $sp, 16
 		
+		li	$v0, 10
+		syscall
 		
 		
 QuickSort:	
@@ -128,6 +128,26 @@ ret:		move	$v0, $a1
 		sw	$v0, 12($sp)
 		jr	$ra
 
+
+PrintArray:
+		lw	$a0, 0($sp)
+		lw	$a1, 4($sp)
+		lw	$a2, 8($sp)
+p_loop:		bgt	$a1, $a2, p_ret
+		lw	$t0, ($a0)
+		addiu	$sp, $sp, -4
+		sw	$a0, 0($sp)
+		move	$a0, $t0
+		li	$v0, 1
+		syscall
+		lw	$a0, 0($sp)
+		addiu	$sp, $sp, 4
+		addi	$a0, $a0, 4
+		addi	$a1, $a1, 1
+		b	p_loop
+p_ret:		jr	$ra
+		
+				
 
 
 				
